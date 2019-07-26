@@ -1,0 +1,49 @@
+[{
+    "identifier":"ALL YEAR",
+    "description": "All Year"
+},
+{
+    "identifier":"JANUARY",
+    "description": "Jan"
+},
+{
+    "identifier":"FEBRUARY",
+    "description": "Feb"
+},
+{
+    "identifier":"MARCH",
+    "description": "Mar"
+},
+{
+    "identifier":"APRIL",
+    "description": "Apr"
+},
+{
+    "identifier":"JUNE",
+    "description": "Jun"
+},
+{
+    "identifier":"JULY",
+    "description": "Jul"
+},
+{
+    "identifier":"AUGUST",
+    "description": "Aug"
+},
+{
+    "identifier":"SEPTEMBER",
+    "description": "Sep"
+},
+{
+    "identifier":"OCTOBER",
+    "description": "Ocb"
+},
+{
+    "identifier":"NOVEMBER",
+    "description": "Nov"
+},
+{
+    "identifier":"DECEMBER",
+    "description": "Dec"
+}
+]
