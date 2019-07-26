@@ -1,4 +1,6 @@
-import { Component, h, Method } from '@stencil/core';
+import { Component, h, Method, Prop } from '@stencil/core';
+//import { configureStore } from "../../redux/store/index";
+import { Store } from "@stencil/redux";
 
 @Component({
   tag: 'w-app',
@@ -6,6 +8,8 @@ import { Component, h, Method } from '@stencil/core';
   shadow: false
 })
 export class WApp {
+  @Prop({ context: "store", mutable:true }) store: Store<any,any>;
+
   @Method()
   async JSONToRaw(toConvert) {
     return await window.btoa(unescape(encodeURIComponent(JSON.stringify(toConvert))));
@@ -15,6 +19,13 @@ export class WApp {
   async RawToJSON(toConvert) {
     return JSON.parse(decodeURIComponent(escape(window.atob(toConvert))))
   }
+
+  async componentWillLoad() {
+    //debugger
+    // this.store = configureStore({})
+    // this.store.setStore(configureStore({}));
+  }
+
   render() {
     return <slot></slot>;
   }

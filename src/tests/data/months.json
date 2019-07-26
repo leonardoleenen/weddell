@@ -1,7 +1,4 @@
-[{
-    "identifier":"ALL YEAR",
-    "description": "All Year"
-},
+[
 {
     "identifier":"JANUARY",
     "description": "Jan"
@@ -18,6 +15,11 @@
     "identifier":"APRIL",
     "description": "Apr"
 },
+{
+    "identifier":"MAY",
+    "description": "May"
+},
+
 {
     "identifier":"JUNE",
     "description": "Jun"
