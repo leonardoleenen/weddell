@@ -108,6 +108,8 @@ export class Chat {
       case 'timeRange':
         debugger
         return <w-time-range attributeToFill={(reversedList)[0]['attributeToFill']} {...(reversedList)[0]['params']} ></w-time-range>
+      case 'singleChoice':
+          return <w-single-choice attributeToFill={(reversedList)[0]['attributeToFill']} values={(reversedList)[0]['values']} ></w-single-choice>
       case 'multipleChoice':
         return <w-multi-choice attributeToFill={(reversedList)[0]['attributeToFill']} values={(reversedList)[0]['values']} ></w-multi-choice>
       default:

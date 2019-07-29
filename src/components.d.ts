@@ -27,7 +27,10 @@ export namespace Components {
     'JSONToRaw': (toConvert: any) => Promise<string>;
     'RawToJSON': (toConvert: any) => Promise<any>;
   }
-  interface WButton {}
+  interface WButton {
+    'attributeToFill': string;
+    'identifier': string;
+  }
   interface WButtonOutlined {}
   interface WCalloutFromSystem {
     'message': string;
@@ -42,6 +45,10 @@ export namespace Components {
   }
   interface WLoading {}
   interface WMultiChoice {
+    'attributeToFill': string;
+    'values': any;
+  }
+  interface WSingleChoice {
     'attributeToFill': string;
     'values': any;
   }
@@ -115,6 +122,12 @@ declare global {
     new (): HTMLWMultiChoiceElement;
   };
 
+  interface HTMLWSingleChoiceElement extends Components.WSingleChoice, HTMLStencilElement {}
+  var HTMLWSingleChoiceElement: {
+    prototype: HTMLWSingleChoiceElement;
+    new (): HTMLWSingleChoiceElement;
+  };
+
   interface HTMLWSystemProfileCardElement extends Components.WSystemProfileCard, HTMLStencilElement {}
   var HTMLWSystemProfileCardElement: {
     prototype: HTMLWSystemProfileCardElement;
@@ -148,6 +161,7 @@ declare global {
     'w-chat': HTMLWChatElement;
     'w-loading': HTMLWLoadingElement;
     'w-multi-choice': HTMLWMultiChoiceElement;
+    'w-single-choice': HTMLWSingleChoiceElement;
     'w-system-profile-card': HTMLWSystemProfileCardElement;
     'w-time-range': HTMLWTimeRangeElement;
     'w-toggle-button': HTMLWToggleButtonElement;
@@ -171,7 +185,11 @@ declare namespace LocalJSX {
     'middle'?: string;
   }
   interface WApp extends JSXBase.HTMLAttributes<HTMLWAppElement> {}
-  interface WButton extends JSXBase.HTMLAttributes<HTMLWButtonElement> {}
+  interface WButton extends JSXBase.HTMLAttributes<HTMLWButtonElement> {
+    'attributeToFill'?: string;
+    'identifier'?: string;
+    'onTaskCompleted'?: (event: CustomEvent<any>) => void;
+  }
   interface WButtonOutlined extends JSXBase.HTMLAttributes<HTMLWButtonOutlinedElement> {}
   interface WCalloutFromSystem extends JSXBase.HTMLAttributes<HTMLWCalloutFromSystemElement> {
     'message'?: string;
@@ -186,6 +204,11 @@ declare namespace LocalJSX {
   }
   interface WLoading extends JSXBase.HTMLAttributes<HTMLWLoadingElement> {}
   interface WMultiChoice extends JSXBase.HTMLAttributes<HTMLWMultiChoiceElement> {
+    'attributeToFill'?: string;
+    'onTaskCompleted'?: (event: CustomEvent<any>) => void;
+    'values'?: any;
+  }
+  interface WSingleChoice extends JSXBase.HTMLAttributes<HTMLWSingleChoiceElement> {
     'attributeToFill'?: string;
     'onTaskCompleted'?: (event: CustomEvent<any>) => void;
     'values'?: any;
@@ -213,6 +236,7 @@ declare namespace LocalJSX {
     'w-chat': WChat;
     'w-loading': WLoading;
     'w-multi-choice': WMultiChoice;
+    'w-single-choice': WSingleChoice;
     'w-system-profile-card': WSystemProfileCard;
     'w-time-range': WTimeRange;
     'w-toggle-button': WToggleButton;
