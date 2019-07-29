@@ -20,6 +20,8 @@ export class WApp {
     return JSON.parse(decodeURIComponent(escape(window.atob(toConvert))))
   }
 
+  
+
   async componentWillLoad() {
     //debugger
     // this.store = configureStore({})

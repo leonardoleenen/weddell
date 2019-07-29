@@ -1,7 +1,8 @@
-import { Component, Prop, h, State, Element} from '@stencil/core';
+import { Component, Prop, h, State, Element, Listen} from '@stencil/core';
 import axios from 'axios'
 import {IChatMessage} from '../../types';
 import Send from '../../static/svg/send.svg';
+import {sendMessage} from '../../services/index'
 
 @Component({
   tag: 'w-chat',
@@ -18,27 +19,22 @@ export class Chat {
   @State() messages: IChatMessage[] = []
   @State() isWriting: boolean = false 
   @State() text: string = ''
+  @State() commandToRender: string = ''
+  result: any = {}
 
   componentWillLoad() {
    
-    window['element']  = this.element.shadowRoot
-
     axios.defaults.headers.common['Authorization'] =  `Bearer ${this.accessToken}`
     axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-    axios.post(
-      'https://dialogflow.googleapis.com/v2/projects/outtripper-register-evwgya/agent/sessions/12345:detectIntent',
-      {
-        "query_input": {
-          "text": {
-            "text": "hi",
-            "language_code": "en-US"
-          }
-        }
-      })
+    sendMessage('hi',this.accessToken)
       .then(result  => {
         this.messages.push({
-          component: result['data']['queryResult']['fulfillmentMessages'][1]['payload']['component'],
+          component: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['component'] : 'callOutFromSystem',
+          command: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['command'] : '',
+          values: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['values'] : '',
+          params: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['params'] : '',
+          attributeToFill: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['attributeToFill'] : '',
           message:result['data']['queryResult']['fulfillmentText']
         })
         this.loading = false
@@ -48,6 +44,24 @@ export class Chat {
         console.log(err)
       })
   }
+
+  @Listen('taskCompleted')
+  handleTask(value){
+    this.setResult(value.detail.value)
+    this.sendMessage(value.detail.message)
+  }
+
+  setResult(value) {
+    const reversedList = Object.assign([],this.messages)
+    reversedList.reverse()
+    const toInsert = {} 
+    toInsert[reversedList[0]['attributeToFill']] = value
+    this.result = {
+      ...this.result,
+      ...toInsert
+    }
+  }
+
 
   componentDidUpdate() {
     if (this.element.shadowRoot.querySelector('input')){
@@ -60,31 +74,26 @@ export class Chat {
     this.text = e.target.value
   }
 
-  sendMessage(event) {
-    this.messages.push({component: 'callOutFromUser', message: this.text})
+
+  sendMessage(msg?:string) {
+    this.messages.push({component: 'callOutFromUser', message: msg ? msg : this.text})
+    
     this.isWriting = true 
-    axios.post(
-      'https://dialogflow.googleapis.com/v2/projects/outtripper-register-evwgya/agent/sessions/12345:detectIntent',
-      {
-        "query_input": {
-          "text": {
-            "text": this.text,
-            "language_code": "en-US"
-          }
-        }
-      })
+    sendMessage(msg ? msg : this.text,this.accessToken)
       .then(result  => {
         this.messages.push({
           component: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['component'] : 'callOutFromSystem',
+          command: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['command'] : '',
+          values: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['values'] : '',
+          params: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['params'] : '',
+          attributeToFill: result['data']['queryResult']['fulfillmentMessages'][1] ?  result['data']['queryResult']['fulfillmentMessages'][1]['payload']['attributeToFill'] : '',
           message:result['data']['queryResult']['fulfillmentText']
-          
         })
+        this.setResult(this.text)
         this.text=''
         this.isWriting = false
         this.loading = false
-        event.focus()
-        event.click()
-        // this.element.scrollTop = this.element.scrollHeight;
+       
       })
       .catch(err => {
         this.loading = false
@@ -92,37 +101,48 @@ export class Chat {
       })
   }
 
+  renderCommand() {
+    const reversedList = Object.assign([],this.messages)
+    reversedList.reverse()
+    switch( this.messages.length >0 ?  (reversedList)[0]['command'] : undefined){
+      case 'timeRange':
+        debugger
+        return <w-time-range attributeToFill={(reversedList)[0]['attributeToFill']} {...(reversedList)[0]['params']} ></w-time-range>
+      case 'multipleChoice':
+        return <w-multi-choice attributeToFill={(reversedList)[0]['attributeToFill']} values={(reversedList)[0]['values']} ></w-multi-choice>
+      default:
+        return (<div class="flex flex-row">
+        <input 
+          onChange = { e => this.handleText(e)}
+          value = {this.text}
+          class="bg-grey-lighter text-grey-darker py-2 font-normal w-3/4 text-grey-darkest border-b border-grey-lighter rounded-l-none"/>
+        <span class="flex items-center bg-grey-lighter rounded rounded-r-none px-3 font-bold text-gray-700">
+        <img src={Send} class="w-8 h-8" onClick={() => this.sendMessage()} />
+      </span>
+    </div>)
+    }
+  }
 
 
 
   render() {
-    
+    console.log(this.messages)
     if (this.loading)
       return <w-loading></w-loading>
 
     return <div class='p-2'> 
       <w-system-profile-card></w-system-profile-card>
       {this.messages.map(m => {
-        console.log(m)
         switch(m.component) {
-          case 'callOutFromSystem':
-            return <w-callout-from-system message={m.message}></w-callout-from-system>
           case 'callOutFromUser':
               return <w-callout-from-user message={m.message}></w-callout-from-user>
+          default:
+              return <w-callout-from-system message={m.message}></w-callout-from-system>
           }
       })}
 
-      {this.isWriting ? <w-wait-writing></w-wait-writing>: 
-      <div class="flex flex-row">
-        <input 
-          onChange = { e => this.handleText(e)}
-          value = {this.text}
-          class="bg-grey-lighter text-grey-darker py-2 font-normal w-3/4 text-grey-darkest border-b border-grey-lighter rounded-l-none"/>
-        <span class="flex items-center bg-grey-lighter rounded rounded-r-none px-3 font-bold text-gray-700">
-        <img src={Send} class="w-8 h-8" onClick={(e) => this.sendMessage(e)} />
-      </span>
-        
-    </div>}
+      
+      {this.isWriting ? <w-wait-writing></w-wait-writing>: this.renderCommand()}
     </div>;
   }
 }

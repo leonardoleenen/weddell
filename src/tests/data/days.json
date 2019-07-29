@@ -1,0 +1,30 @@
+[
+  {
+    "identifier": "MONDAY",
+    "description": "Mon"
+  },
+  {
+    "identifier": "TUESDAY",
+    "description": "Tus"
+  },
+  {
+    "identifier": "WEDNESDAY",
+    "description": "Wed"
+  },
+  {
+    "identifier": "THRUSDAT",
+    "description": "THU"
+  },
+  {
+    "identifier": "FRIDAY",
+    "description": "Fri"
+  },
+  {
+    "identifier": "SATURDAY",
+    "description": "Sat"
+  },
+  {
+    "identifier": "SUNDAY",
+    "description": "Sun"
+  }
+]

@@ -42,9 +42,14 @@ export namespace Components {
   }
   interface WLoading {}
   interface WMultiChoice {
+    'attributeToFill': string;
     'values': any;
   }
   interface WSystemProfileCard {}
+  interface WTimeRange {
+    'attributeToFill': string;
+    'format': string;
+  }
   interface WToggleButton {
     'identifier': string;
     'label': string;
@@ -116,6 +121,12 @@ declare global {
     new (): HTMLWSystemProfileCardElement;
   };
 
+  interface HTMLWTimeRangeElement extends Components.WTimeRange, HTMLStencilElement {}
+  var HTMLWTimeRangeElement: {
+    prototype: HTMLWTimeRangeElement;
+    new (): HTMLWTimeRangeElement;
+  };
+
   interface HTMLWToggleButtonElement extends Components.WToggleButton, HTMLStencilElement {}
   var HTMLWToggleButtonElement: {
     prototype: HTMLWToggleButtonElement;
@@ -138,6 +149,7 @@ declare global {
     'w-loading': HTMLWLoadingElement;
     'w-multi-choice': HTMLWMultiChoiceElement;
     'w-system-profile-card': HTMLWSystemProfileCardElement;
+    'w-time-range': HTMLWTimeRangeElement;
     'w-toggle-button': HTMLWToggleButtonElement;
     'w-wait-writing': HTMLWWaitWritingElement;
   }
@@ -174,9 +186,16 @@ declare namespace LocalJSX {
   }
   interface WLoading extends JSXBase.HTMLAttributes<HTMLWLoadingElement> {}
   interface WMultiChoice extends JSXBase.HTMLAttributes<HTMLWMultiChoiceElement> {
+    'attributeToFill'?: string;
+    'onTaskCompleted'?: (event: CustomEvent<any>) => void;
     'values'?: any;
   }
   interface WSystemProfileCard extends JSXBase.HTMLAttributes<HTMLWSystemProfileCardElement> {}
+  interface WTimeRange extends JSXBase.HTMLAttributes<HTMLWTimeRangeElement> {
+    'attributeToFill'?: string;
+    'format'?: string;
+    'onTaskCompleted'?: (event: CustomEvent<any>) => void;
+  }
   interface WToggleButton extends JSXBase.HTMLAttributes<HTMLWToggleButtonElement> {
     'identifier'?: string;
     'label'?: string;
@@ -195,6 +214,7 @@ declare namespace LocalJSX {
     'w-loading': WLoading;
     'w-multi-choice': WMultiChoice;
     'w-system-profile-card': WSystemProfileCard;
+    'w-time-range': WTimeRange;
     'w-toggle-button': WToggleButton;
     'w-wait-writing': WWaitWriting;
   }

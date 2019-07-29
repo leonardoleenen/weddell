@@ -1,4 +1,4 @@
-import { Component, h, Prop, State } from '@stencil/core';
+import { Component, h, Prop, State, Event, EventEmitter  } from '@stencil/core';
 
 @Component({
   tag: 'w-multi-choice',
@@ -8,19 +8,21 @@ import { Component, h, Prop, State } from '@stencil/core';
 export class WMultiChoise {
 
   @Prop() values: any
+  @Prop() attributeToFill: string
   @State() rawValues: any[]
   @State() selection: string[] = []
+
+  @Event() taskCompleted: EventEmitter;
 
   async componentWillLoad() {
     this.rawValues = JSON.parse(await decodeURIComponent(escape(window.atob(this.values))))
   }
 
-  fake() {
-    console.log(this.selection)
+  complete() {
+    this.taskCompleted.emit({attributeToFill:this.attributeToFill,message: this.selection.join(", "), value: this.selection})
   }
 
   render() {
-    console.log(this.selection)
     return <div class='block'> {
       this.rawValues.map(v => {
         return (<w-toggle-button 
@@ -31,7 +33,7 @@ export class WMultiChoise {
       })
     }
     <span></span>
-    <div class='pt-4'><w-button-outlined  onClick={() => this.fake()}>Continue</w-button-outlined></div>
+    <div class='pt-4'><w-button-outlined  onClick={() => this.complete()}>Continue</w-button-outlined></div>
     
     </div>;
   }
