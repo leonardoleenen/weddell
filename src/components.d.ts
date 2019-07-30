@@ -43,10 +43,19 @@ export namespace Components {
   interface WChat {
     'accessToken': string;
   }
+  interface WCurrencyInput {
+    'attributeToFill': string;
+  }
   interface WLoading {}
   interface WMultiChoice {
     'attributeToFill': string;
     'values': any;
+  }
+  interface WNumberSlider {
+    'attributeToFill': string;
+    'label': string;
+    'max': number;
+    'min': number;
   }
   interface WSingleChoice {
     'attributeToFill': string;
@@ -110,6 +119,12 @@ declare global {
     new (): HTMLWChatElement;
   };
 
+  interface HTMLWCurrencyInputElement extends Components.WCurrencyInput, HTMLStencilElement {}
+  var HTMLWCurrencyInputElement: {
+    prototype: HTMLWCurrencyInputElement;
+    new (): HTMLWCurrencyInputElement;
+  };
+
   interface HTMLWLoadingElement extends Components.WLoading, HTMLStencilElement {}
   var HTMLWLoadingElement: {
     prototype: HTMLWLoadingElement;
@@ -120,6 +135,12 @@ declare global {
   var HTMLWMultiChoiceElement: {
     prototype: HTMLWMultiChoiceElement;
     new (): HTMLWMultiChoiceElement;
+  };
+
+  interface HTMLWNumberSliderElement extends Components.WNumberSlider, HTMLStencilElement {}
+  var HTMLWNumberSliderElement: {
+    prototype: HTMLWNumberSliderElement;
+    new (): HTMLWNumberSliderElement;
   };
 
   interface HTMLWSingleChoiceElement extends Components.WSingleChoice, HTMLStencilElement {}
@@ -159,8 +180,10 @@ declare global {
     'w-callout-from-system': HTMLWCalloutFromSystemElement;
     'w-callout-from-user': HTMLWCalloutFromUserElement;
     'w-chat': HTMLWChatElement;
+    'w-currency-input': HTMLWCurrencyInputElement;
     'w-loading': HTMLWLoadingElement;
     'w-multi-choice': HTMLWMultiChoiceElement;
+    'w-number-slider': HTMLWNumberSliderElement;
     'w-single-choice': HTMLWSingleChoiceElement;
     'w-system-profile-card': HTMLWSystemProfileCardElement;
     'w-time-range': HTMLWTimeRangeElement;
@@ -202,11 +225,22 @@ declare namespace LocalJSX {
   interface WChat extends JSXBase.HTMLAttributes<HTMLWChatElement> {
     'accessToken'?: string;
   }
+  interface WCurrencyInput extends JSXBase.HTMLAttributes<HTMLWCurrencyInputElement> {
+    'attributeToFill'?: string;
+    'onTaskCompleted'?: (event: CustomEvent<any>) => void;
+  }
   interface WLoading extends JSXBase.HTMLAttributes<HTMLWLoadingElement> {}
   interface WMultiChoice extends JSXBase.HTMLAttributes<HTMLWMultiChoiceElement> {
     'attributeToFill'?: string;
     'onTaskCompleted'?: (event: CustomEvent<any>) => void;
     'values'?: any;
+  }
+  interface WNumberSlider extends JSXBase.HTMLAttributes<HTMLWNumberSliderElement> {
+    'attributeToFill'?: string;
+    'label'?: string;
+    'max'?: number;
+    'min'?: number;
+    'onTaskCompleted'?: (event: CustomEvent<any>) => void;
   }
   interface WSingleChoice extends JSXBase.HTMLAttributes<HTMLWSingleChoiceElement> {
     'attributeToFill'?: string;
@@ -234,8 +268,10 @@ declare namespace LocalJSX {
     'w-callout-from-system': WCalloutFromSystem;
     'w-callout-from-user': WCalloutFromUser;
     'w-chat': WChat;
+    'w-currency-input': WCurrencyInput;
     'w-loading': WLoading;
     'w-multi-choice': WMultiChoice;
+    'w-number-slider': WNumberSlider;
     'w-single-choice': WSingleChoice;
     'w-system-profile-card': WSystemProfileCard;
     'w-time-range': WTimeRange;

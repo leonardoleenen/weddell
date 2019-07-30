@@ -104,9 +104,14 @@ export class Chat {
   renderCommand() {
     const reversedList = Object.assign([],this.messages)
     reversedList.reverse()
+    const attributeToFill = (reversedList)[0]['attributeToFill']
+    const params = (reversedList)[0]['params']
     switch( this.messages.length >0 ?  (reversedList)[0]['command'] : undefined){
+      case 'currencyInput':
+        return <w-currency-input attributeToFill={attributeToFill} {...params} ></w-currency-input>
+      case 'numberSlider':
+        return <w-number-slider attributeToFill={attributeToFill} {...params} ></w-number-slider>
       case 'timeRange':
-        debugger
         return <w-time-range attributeToFill={(reversedList)[0]['attributeToFill']} {...(reversedList)[0]['params']} ></w-time-range>
       case 'singleChoice':
           return <w-single-choice attributeToFill={(reversedList)[0]['attributeToFill']} values={(reversedList)[0]['values']} ></w-single-choice>

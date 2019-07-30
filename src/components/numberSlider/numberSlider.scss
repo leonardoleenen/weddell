@@ -1,9 +1,8 @@
+@import '../../styles/slider.scss';
 @import '../../styles/styles.css';
-@import '../../styles//slider.scss';
 
 
 .box {
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
 }
-

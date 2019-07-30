@@ -27,7 +27,7 @@ export class WTimeRange {
 
 
   componentWillLoad() {
-    switch(this.format) {
+    switch(this.format.toLowerCase()) {
       case 'hh': 
         this.config.minValue = 0
         this.config.maxValue = 24 
@@ -49,7 +49,6 @@ export class WTimeRange {
   }
 
   change(e) {
-    console.log(e.target.value)
     if (this.inStartingStage)
       this.result = {
         ...this.result,
@@ -70,9 +69,10 @@ export class WTimeRange {
       return
     }
 
-    const starting = ''
-    const till = ''
-    this.taskCompleted.emit({attributeToFill:this.attributeToFill,value: this.result, message: `starting at ${starting} till ${till}`})
+    const starting = `${moment.utc().startOf('day').add(this.result.starting, this.format === 'hh' ?  'hours' : 'minutes').format('hh:mmA')}`
+    const till = `${moment.utc().startOf('day').add(this.result.till, this.format === 'hh' ?  'hours' : 'minutes').format('hh:mmA')}`
+
+    this.taskCompleted.emit({attributeToFill:this.attributeToFill,value: this.result, message: `starting at ${starting} to ${till}`})
   }
 
   render() {

@@ -1,0 +1,10 @@
+@import '../../styles/styles.css';
+
+.container {
+    display:grid;
+    grid-template-columns: 20% 70% 10%;
+}
+
+img {
+    margin:auto
+}
