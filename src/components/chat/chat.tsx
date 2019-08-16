@@ -21,6 +21,7 @@ export class Chat {
   @State() text: string = ''
   @State() commandToRender: string = ''
   result: any = {}
+  systemAvatar = 'https://res.cloudinary.com/dtyymz4nn/image/upload/v1564066597/weddell/wimo.jpg'
 
   componentWillLoad() {
    
@@ -118,15 +119,14 @@ export class Chat {
       case 'multipleChoice':
         return <w-multi-choice attributeToFill={(reversedList)[0]['attributeToFill']} values={(reversedList)[0]['values']} ></w-multi-choice>
       default:
-        return (<div class="flex flex-row">
-        <input 
-          onChange = { e => this.handleText(e)}
-          value = {this.text}
-          class="bg-grey-lighter text-grey-darker py-2 font-normal w-3/4 text-grey-darkest border-b border-grey-lighter rounded-l-none"/>
-        <span class="flex items-center bg-grey-lighter rounded rounded-r-none px-3 font-bold text-gray-700">
-        <img src={Send} class="w-8 h-8" onClick={() => this.sendMessage()} />
-      </span>
-    </div>)
+        return (
+          <div class='box bg-gray-300 rounded p-2'>
+            <input 
+              onChange= { e => this.handleText(e)}
+              value =  {this.text}
+            class= 'bg-gray-300 font-thin text-gray-900 pl-2 outline-none'></input>
+            <img src={Send} class='w-6 h-6' onClick={() => this.sendMessage()}/>
+        </div>)
     }
   }
 
@@ -144,7 +144,7 @@ export class Chat {
           case 'callOutFromUser':
               return <w-callout-from-user message={m.message}></w-callout-from-user>
           default:
-              return <w-callout-from-system message={m.message}></w-callout-from-system>
+              return <w-callout-from-system message={m.message} urlAvatar={this.systemAvatar}></w-callout-from-system>
           }
       })}
 

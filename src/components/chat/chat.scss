@@ -1,1 +1,7 @@
 @import '../../styles/styles.css';
+
+
+.box {
+    display:grid;
+    grid-template-columns: 90%  10%;
+}

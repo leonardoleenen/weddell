@@ -5,7 +5,7 @@ export const sendMessage = (message: string, accessToken:string) => {
   axios.defaults.headers.post['Content-Type'] = 'application/json';
 
   return axios.post(
-    'https://dialogflow.googleapis.com/v2/projects/outtripper-register-evwgya/agent/sessions/12345:detectIntent',
+    'https://dialogflow.googleapis.com/v2/projects/jurassiclake-pclmpb/agent/sessions/12345:detectIntent',
     {
       "query_input": {
         "text": {
